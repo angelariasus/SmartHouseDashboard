@@ -167,9 +167,9 @@
     <!-- Sección de ALARMA -->
     <div class="section">
       <img src="motion_sensor.png" alt="Sensor de Movimiento">
-      <p id="statusMovimiento">Sin movimiento</p>
-      <button onclick="actualizarAlarma('movimiento', true)">ENCENDER ALARMA</button>
-      <button onclick="actualizarAlarma('movimiento', false)">APAGAR ALARMA</button>
+      <p id="estadoAlarmaMovimiento" >Sin movimiento</p>
+      <button onclick="actualizarEstado('movimiento', true)">ENCENDER ALARMA</button>
+      <button onclick="actualizarEstado('movimiento', false)">APAGAR ALARMA</button>
     </div>
 
     <!-- Sección central -->
@@ -182,9 +182,9 @@
     <!-- Sección de Humo -->
     <div class="section">
       <img src="firedetector.png" alt="Sensor de Humo">
-      <p id="statusHumo">Sin incendio</p>
-      <button onclick="actualizarAlarma('humo', true)">ENCENDER ALARMA</button>
-      <button onclick="actualizarAlarma('humo', false)">APAGAR ALARMA</button>
+      <p id="estadoAlarmaHumo">Sin incendio</p>
+      <button onclick="actualizarEstado('humo', true)">ENCENDER ALARMA</button>
+      <button onclick="actualizarEstado('humo', false)">APAGAR ALARMA</button>
     </div>
   </div>
 
@@ -243,57 +243,41 @@
       }
     }
   </script>
-    <script>
-        const apiUrl = "https://apismarthouse-production.up.railway.app/"; 
+  <script>
+    const apiUrl = 'http://<IP_DEL_SERVIDOR>:3000'; // Cambia <IP_DEL_SERVIDOR> por la IP del servidor
 
-        async function actualizarAlarma(tipo, estado) {
-            const url = tipo === 'movimiento' ? `${apiUrl}/api/alarmas/movimiento` : `${apiUrl}/api/alarmas/humo`;
-            const body = tipo === 'movimiento' ? { alarmaMovimiento: estado } : { alarmaHumo: estado };
+    async function obtenerEstado() {
+      try {
+        const res = await fetch(`${apiUrl}/estado`);
+        const data = await res.json();
+        document.getElementById('estadoAlarmaHumo').innerText = data.alarmaHumo ? 'Activa' : 'Inactiva';
+        document.getElementById('estadoAlarmaMovimiento').innerText = data.alarmaMovimiento ? 'Activa' : 'Inactiva';
+      } catch (error) {
+        console.error('Error al obtener estado:', error);
+      }
+    }
 
-            try {
-                const response = await fetch(url, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(body),
-                });
-                
-                const data = await response.json();
-                if (tipo === 'movimiento') {
-                    document.getElementById("statusMovimiento").innerText = `Estado de Movimiento: ${data.alarmaMovimiento ? 'Activada' : 'Desactivada'}`;
-                } else {
-                    document.getElementById("statusHumo").innerText = `Estado de Humo: ${data.alarmaHumo ? 'Activada' : 'Desactivada'}`;
-                }
-            } catch (error) {
-                console.error("Error al actualizar la alarma:", error);
-            }
+    async function actualizarEstado(alarma, estado) {
+      const body = alarma === 'humo' 
+        ? { alarmaHumo: estado } 
+        : { alarmaMovimiento: estado };
+
+      try {
+        const res = await fetch(`${apiUrl}/actualizar`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+
+        if (res.ok) {
+          obtenerEstado(); // Actualiza el estado mostrado en la página
         }
+      } catch (error) {
+        console.error('Error al actualizar estado:', error);
+      }
+    }
 
-        async function consultarEstadoMovimiento() {
-            const apiUrlMovimiento = `${apiUrl}/api/alarmas/movimiento`; 
-            try {
-                const response = await fetch(apiUrlMovimiento);
-                const data = await response.json();
-                document.getElementById("statusMovimiento").innerText = `Estado de Movimiento: ${data.alarmaMovimiento ? 'Activada' : 'Desactivada'}`;
-            } catch (error) {
-                console.error("Error al consultar el estado de la alarma de movimiento:", error);
-            }
-        }
-
-        async function consultarEstadoHumo() {
-            const apiUrlHumo = `${apiUrl}/api/alarmas/humo`; 
-            try {
-                const response = await fetch(apiUrlHumo);
-                const data = await response.json();
-                document.getElementById("statusHumo").innerText = `Estado de Humo: ${data.alarmaHumo ? 'Activada' : 'Desactivada'}`;
-            } catch (error) {
-                console.error("Error al consultar el estado de la alarma de humo:", error);
-            }
-        }
-
-        setInterval(consultarEstadoMovimiento, 500); 
-        setInterval(consultarEstadoHumo, 500); 
-      </script>
+    window.onload = obtenerEstado; // Cargar el estado al iniciar la página
+  </script>
 </body>
 </html>
