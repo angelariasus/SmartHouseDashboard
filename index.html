@@ -245,25 +245,25 @@
   </script>
     <script>
         const apiUrl = "https://apismarthouse-production.up.railway.app/"; 
-    
+
         async function actualizarAlarma(tipo, estado) {
-            const url = tipo === 'movimiento' ? '${apiUrl}/api/alarmas/movimiento' : '${apiUrl}/api/alarmas/humo';
+            const url = tipo === 'movimiento' ? `${apiUrl}/api/alarmas/movimiento` : `${apiUrl}/api/alarmas/humo`;
             const body = tipo === 'movimiento' ? { alarmaMovimiento: estado } : { alarmaHumo: estado };
 
             try {
                 const response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(body),
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(body),
                 });
                 
                 const data = await response.json();
                 if (tipo === 'movimiento') {
-                document.getElementById("statusMovimiento").innerText = `Estado de Movimiento: ${data.alarmaMovimiento ? 'Activada' : 'Desactivada'}`;
+                    document.getElementById("statusMovimiento").innerText = `Estado de Movimiento: ${data.alarmaMovimiento ? 'Activada' : 'Desactivada'}`;
                 } else {
-                document.getElementById("statusHumo").innerText = `Estado de Humo: ${data.alarmaHumo ? 'Activada' : 'Desactivada'}`;
+                    document.getElementById("statusHumo").innerText = `Estado de Humo: ${data.alarmaHumo ? 'Activada' : 'Desactivada'}`;
                 }
             } catch (error) {
                 console.error("Error al actualizar la alarma:", error);
@@ -271,7 +271,7 @@
         }
 
         async function consultarEstadoMovimiento() {
-        const apiUrlMovimiento = "https://apismarthouse-production.up.railway.app/api/alarmas/movimiento"; 
+            const apiUrlMovimiento = `${apiUrl}/api/alarmas/movimiento`; 
             try {
                 const response = await fetch(apiUrlMovimiento);
                 const data = await response.json();
@@ -279,10 +279,10 @@
             } catch (error) {
                 console.error("Error al consultar el estado de la alarma de movimiento:", error);
             }
-         }
+        }
 
-         async function consultarEstadoHumo() {
-            const apiUrlHumo = "https://apismarthouse-production.up.railway.app/api/alarmas/humo"; 
+        async function consultarEstadoHumo() {
+            const apiUrlHumo = `${apiUrl}/api/alarmas/humo`; 
             try {
                 const response = await fetch(apiUrlHumo);
                 const data = await response.json();
@@ -291,8 +291,9 @@
                 console.error("Error al consultar el estado de la alarma de humo:", error);
             }
         }
-        setInterval(consultarEstadoMovimiento, 500);  
-        setInterval(consultarEstadoHumo, 500);
+
+        setInterval(consultarEstadoMovimiento, 500); 
+        setInterval(consultarEstadoHumo, 500); 
       </script>
 </body>
 </html>
