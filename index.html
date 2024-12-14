@@ -247,7 +247,7 @@
         const apiUrl = "https://apismarthouse-production.up.railway.app/"; 
     
         async function actualizarAlarma(tipo, estado) {
-            const url = tipo === 'movimiento' ? '/api/alarmas/movimiento' : '/api/alarmas/humo';
+            const url = tipo === 'movimiento' ? '${apiUrl}/api/alarmas/movimiento' : '${apiUrl}/api/alarmas/humo';
             const body = tipo === 'movimiento' ? { alarmaMovimiento: estado } : { alarmaHumo: estado };
 
             try {
@@ -258,7 +258,7 @@
                 },
                 body: JSON.stringify(body),
                 });
-
+                
                 const data = await response.json();
                 if (tipo === 'movimiento') {
                 document.getElementById("statusMovimiento").innerText = `Estado de Movimiento: ${data.alarmaMovimiento ? 'Activada' : 'Desactivada'}`;
