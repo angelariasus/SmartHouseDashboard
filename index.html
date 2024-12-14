@@ -244,7 +244,7 @@
     }
   </script>
     <script>
-        const apiUrl = "https://smarthouseapi-production.up.railway.app"; 
+        const apiUrl = "https://apismarthouse-production.up.railway.app/"; 
     
         async function actualizarAlarma(tipo, estado) {
             const url = tipo === 'movimiento' ? '/api/alarmas/movimiento' : '/api/alarmas/humo';
@@ -271,7 +271,7 @@
         }
 
         async function consultarEstadoMovimiento() {
-        const apiUrlMovimiento = "https://smarthouseapi-production.up.railway.app/api/alarmas/movimiento"; 
+        const apiUrlMovimiento = "https://apismarthouse-production.up.railway.app/api/alarmas/movimiento"; 
             try {
                 const response = await fetch(apiUrlMovimiento);
                 const data = await response.json();
@@ -282,7 +282,7 @@
          }
 
          async function consultarEstadoHumo() {
-            const apiUrlHumo = "https://smarthouseapi-production.up.railway.app/api/alarmas/humo"; 
+            const apiUrlHumo = "https://apismarthouse-production.up.railway.app/api/alarmas/humo"; 
             try {
                 const response = await fetch(apiUrlHumo);
                 const data = await response.json();
