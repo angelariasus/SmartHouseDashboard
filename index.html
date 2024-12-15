@@ -227,13 +227,13 @@
     function encenderAlarmaHumo() {
       alert("Alarma de humo encendida");
       registrarEnGoogleSheets("Humo", "Alarma Encendida");
-      actualizarEstado('Humo', true);
+      actualizarEstado('humo', true);
     }
   
     function apagarAlarmaHumo() {
       alert("Alarma de humo apagada");
       registrarEnGoogleSheets("Humo", "Alarma Apagada");
-      actualizarEstado('Humo', false);
+      actualizarEstado('humo', false);
     }
   
     function showWindow(id) {
