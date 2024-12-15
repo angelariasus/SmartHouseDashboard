@@ -270,13 +270,13 @@
         });
 
         if (res.ok) {
-          obtenerEstado(); // Actualiza el estado mostrado en la página
+          console.log("Estados actualizados.");
         }
       } catch (error) {
         console.error('Error al actualizar estado:', error);
       }
     }
-
+    setInterval(obtenerEstado, 500);
     window.onload = obtenerEstado; // Cargar el estado al iniciar la página
   </script>
 </body>
