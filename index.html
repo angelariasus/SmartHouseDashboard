@@ -168,13 +168,13 @@
     <div class="section">
       <img src="motion_sensor.png" alt="Sensor de Movimiento">
       <p id="estadoAlarmaMovimiento" >Sin movimiento</p>
-      <button onclick="actualizarEstado('movimiento', true)">ENCENDER ALARMA</button>
-      <button onclick="actualizarEstado('movimiento', false)">APAGAR ALARMA</button>
+      <button onclick="encenderAlarmaMovimiento() ">ENCENDER ALARMA</button>
+      <button onclick="apagarAlarmaMovimiento()">APAGAR ALARMA</button>
     </div>
 
     <!-- Sección central -->
     <div class="section">
-      <img src="casainteligente.jpeg" alt="Casa Inteligente" style="max-width: 80%;">
+      <img src="casainteligente.jpg" alt="Casa Inteligente" style="max-width: 80%;">
       <button onclick="window.open('https://docs.google.com/spreadsheets/d/1LZ9CsYYOtwZGJ-unxE8_i7geqigHPClcjPfTQG2QyFo/edit?gid=0#gid=0')">Mostrar Registros</button>
       <button onclick="cerrarPestana()">Salir</button>
     </div>
@@ -183,8 +183,8 @@
     <div class="section">
       <img src="firedetector.png" alt="Sensor de Humo">
       <p id="estadoAlarmaHumo">Sin incendio</p>
-      <button onclick="actualizarEstado('humo', true)">ENCENDER ALARMA</button>
-      <button onclick="actualizarEstado('humo', false)">APAGAR ALARMA</button>
+      <button onclick="encenderAlarmaHumo()">ENCENDER ALARMA</button>
+      <button onclick="apagarAlarmaHumo()">APAGAR ALARMA</button>
     </div>
   </div>
 
@@ -215,21 +215,25 @@
     function encenderAlarmaMovimiento() {
       alert("Alarma de movimiento encendida");
       registrarEnGoogleSheets("Movimiento", "Alarma Encendida");
+      actualizarEstado('movimiento', true);
     }
   
     function apagarAlarmaMovimiento() {
       alert("Alarma de movimiento apagada");
       registrarEnGoogleSheets("Movimiento", "Alarma Apagada");
+      actualizarEstado('movimiento', false);
     }
   
     function encenderAlarmaHumo() {
       alert("Alarma de humo encendida");
       registrarEnGoogleSheets("Humo", "Alarma Encendida");
+      actualizarEstado('Humo', true);
     }
   
     function apagarAlarmaHumo() {
       alert("Alarma de humo apagada");
       registrarEnGoogleSheets("Humo", "Alarma Apagada");
+      actualizarEstado('Humo', false);
     }
   
     function showWindow(id) {
@@ -244,7 +248,7 @@
     }
   </script>
   <script>
-    const apiUrl = "https://apismarthouse-production.up.railway.app"; 
+    const apiUrl = 'https://apismarthouse-production.up.railway.app'; // Cambia <IP_DEL_SERVIDOR> por la IP del servidor
 
     async function obtenerEstado() {
       try {
@@ -270,13 +274,13 @@
         });
 
         if (res.ok) {
-          console.log("Estados actualizados.");
+          console.log("FUE MI PENE");
         }
       } catch (error) {
         console.error('Error al actualizar estado:', error);
       }
     }
-    setInterval(obtenerEstado, 500);
+
     window.onload = obtenerEstado; // Cargar el estado al iniciar la página
   </script>
 </body>
